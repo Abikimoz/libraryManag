@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DatabaseManager {
+
+    private Connection connection;
+
     public void connect () throws IOException {
         Properties prop = new Properties();
         Path envFilePath = Paths.get("src/main/java/org/example/example.env");
@@ -22,7 +25,7 @@ public class DatabaseManager {
         String dbPassword = (String) prop.get("DB_PASSWORD");
 
         try {
-            Connection connection = DriverManager.getConnection(connectionString + dbName, dbUser, dbPassword);
+            connection = DriverManager.getConnection(connectionString + dbName, dbUser, dbPassword);
             if (connection != null) {
                 System.out.println("Connection done!");
             }
@@ -33,6 +36,22 @@ public class DatabaseManager {
 
         catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void disconnect() {
+        if (connection != null) {
+            try {
+                connection.close();
+                System.out.println("Connection closed!");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                connection = null;
+            }
+        }
+        else {
+            System.out.println("Connection is missing");
         }
     }
 }
