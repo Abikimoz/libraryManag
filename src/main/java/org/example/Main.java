@@ -10,8 +10,9 @@ public class Main {
         try {
             dbManager.connect();
 //            dbManager.addBook("Nineteen Eighty-Four", "George Orwell", Date.valueOf("1949-06-08"), "978-0451524935");
-            System.out.println(dbManager.findBookByTitle("War and Peace"));
-//            System.out.println(dbManager.getAllBooks());
+//            System.out.println(dbManager.findBookByTitle("War and Peace"));
+//            dbManager.deleteBook(1);
+            System.out.println(dbManager.getAllBooks());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException e) {

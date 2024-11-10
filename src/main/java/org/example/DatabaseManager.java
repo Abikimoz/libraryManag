@@ -95,4 +95,14 @@ public class DatabaseManager {
         }
     }
 
+    public void deleteBook(int id) throws SQLException {
+        String query = "DELETE FROM books WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
