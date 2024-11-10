@@ -105,4 +105,51 @@ public class DatabaseManager {
         }
     }
 
+    public void addReader(String name, String email) throws SQLException {
+        String query = "INSERT INTO readers (name, email) VALUES (?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, name);
+            stmt.setString(2, email);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<String> getAllReaders() throws SQLException {
+        List<String> readers = new ArrayList<>();
+        String query = "SELECT name FROM readers";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                readers.add(rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return readers;
+    }
+
+    public String findReaderByEmail(String email) throws SQLException {
+        String query = "SELECT * FROM readers WHERE email = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name") + " " + email;
+            } else {
+                return "Reader not found";
+            }
+        }
+    }
+
+    public void deleteReader(int id) throws SQLException {
+        String query = "DELETE FROM readers WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
