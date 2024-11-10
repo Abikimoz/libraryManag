@@ -82,4 +82,17 @@ public class DatabaseManager {
         return books;
     }
 
+    public String findBookByTitle(String title) throws SQLException {
+        String query = "SELECT * FROM books WHERE title = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, title);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("title") + " " + rs.getString("author") + " " + rs.getString("publishedDate") + " " + rs.getString("isbn");
+            } else {
+                return "Book not found";
+            }
+        }
+    }
+
 }
